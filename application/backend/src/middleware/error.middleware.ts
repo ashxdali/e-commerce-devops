@@ -2,10 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../utils/AppError.js';
 import { logger } from '../utils/logger.js';
 import { config } from '../config/index.js';
+import { sendError } from '../utils/response.js';
 
 export function errorHandler(
   err: Error | AppError,
-  _req: Request,
+  req: Request,
   res: Response,
   _next: NextFunction
 ): void {
@@ -18,33 +19,23 @@ export function errorHandler(
   // Safe user-facing message
   let message = isAppError ? err.message : 'An unexpected error occurred. Please try again later.';
 
-  // If in production and not an operational AppError, mask message completely
+  // Mask internal unexpected error messages in production
   if (!isDev && !isAppError) {
     message = 'An internal server error occurred.';
   }
 
-  // Log error with context for debugging
+  // Log error with context for observability
   logger.error(err.message || 'Unhandled error', {
     name: err.name,
     statusCode,
     errorCode,
+    path: req.originalUrl || req.url,
+    method: req.method,
     stack: isDev ? err.stack : undefined,
   });
 
-  const responsePayload: Record<string, unknown> = {
-    status: 'error',
-    statusCode,
-    errorCode,
-    message,
-  };
+  const details = isAppError && err.details ? err.details : undefined;
+  const stack = isDev && err.stack ? err.stack : undefined;
 
-  if (isAppError && err.details) {
-    responsePayload.details = err.details;
-  }
-
-  if (isDev && err.stack) {
-    responsePayload.stack = err.stack;
-  }
-
-  res.status(statusCode).json(responsePayload);
+  sendError(res, message, statusCode, errorCode, details as any, stack);
 }
