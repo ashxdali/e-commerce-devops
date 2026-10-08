@@ -1,6 +1,6 @@
 import React from 'react';
 import { ShoppingBag } from 'lucide-react';
-import EmptyState from '../components/EmptyState.js';
+import EmptyState from '../components/EmptyState';
 
 export const OrdersPage: React.FC = () => {
   return (
@@ -10,13 +10,13 @@ export const OrdersPage: React.FC = () => {
           <ShoppingBag className="w-8 h-8 text-brand-400" /> Order History
         </h1>
         <p className="text-sm text-slate-400">
-          Order placement and status tracking endpoints will be added in Part 5.
+          Order placement and status tracking demo interface.
         </p>
       </div>
 
       <EmptyState
         title="No Orders Found"
-        description="Order placement and history will be connected in future development stages."
+        description="Order management and checkout processing will be available in future releases."
       />
     </div>
   );
