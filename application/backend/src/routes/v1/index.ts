@@ -6,6 +6,10 @@ import { config } from '../../config/index.js';
 import { z } from 'zod';
 import authRouter from './auth.routes.js';
 import adminRouter from './admin.routes.js';
+import categoryRouter from './category.routes.js';
+import productRouter from './product.routes.js';
+import cartRouter from './cart.routes.js';
+import wishlistRouter from './wishlist.routes.js';
 
 const v1Router = Router();
 
@@ -14,6 +18,18 @@ v1Router.get('/', getApiInfo);
 
 // Authentication API Endpoints
 v1Router.use('/auth', authRouter);
+
+// Categories API Endpoints
+v1Router.use('/categories', categoryRouter);
+
+// Products API Endpoints
+v1Router.use('/products', productRouter);
+
+// Cart API Endpoints
+v1Router.use('/cart', cartRouter);
+
+// Wishlist API Endpoints
+v1Router.use('/wishlist', wishlistRouter);
 
 // Admin Temporary Test Endpoints
 v1Router.use('/admin', adminRouter);

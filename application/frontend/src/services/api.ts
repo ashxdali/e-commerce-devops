@@ -11,14 +11,16 @@ export const apiClient: AxiosInstance = axios.create({
   },
 });
 
-// Request Interceptor (Prepared for future JWT Auth token attachment in Part 3)
+// Request Interceptor: Attach JWT Access Token if present
 apiClient.interceptors.request.use(
   (config) => {
-    // Note: Authentication header attachment will be implemented in Part 3
-    // const token = localStorage.getItem('auth_token');
-    // if (token && config.headers) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+    const token =
+      localStorage.getItem('accessToken') ||
+      localStorage.getItem('auth_token') ||
+      localStorage.getItem('token');
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error: AxiosError) => {

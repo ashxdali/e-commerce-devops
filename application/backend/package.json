@@ -9,7 +9,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "lint": "eslint .",
-    "test": "tsx --test tests/api.test.ts tests/auth.test.ts",
+    "test": "tsx --test tests/api.test.ts tests/auth.test.ts tests/category.test.ts tests/product.test.ts tests/cart.test.ts tests/wishlist.test.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "prisma db seed",
