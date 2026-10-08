@@ -37,5 +37,5 @@ export function errorHandler(
   const details = isAppError && err.details ? err.details : undefined;
   const stack = isDev && err.stack ? err.stack : undefined;
 
-  sendError(res, message, statusCode, errorCode, details as any, stack);
+  sendError(res, message, statusCode, errorCode, details as Record<string, unknown> | undefined, stack);
 }

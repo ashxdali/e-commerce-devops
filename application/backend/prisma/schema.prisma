@@ -54,11 +54,12 @@ model User {
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
-  addresses    Address[]
-  cart         Cart?
-  wishlist     Wishlist?
-  orders       Order[]
-  reviews      Review[]
+  addresses     Address[]
+  cart          Cart?
+  wishlist      Wishlist?
+  orders        Order[]
+  reviews       Review[]
+  refreshTokens RefreshToken[]
 
   @@map("users")
 }
@@ -311,3 +312,21 @@ model Review {
   @@index([productId])
   @@map("reviews")
 }
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([revokedAt])
+  @@map("refresh_tokens")
+}
+

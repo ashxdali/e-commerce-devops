@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import healthRoutes from './routes/health.routes.js';
 import apiRoutes from './routes/index.js';
 import { requestLogger } from './middleware/logger.middleware.js';
@@ -23,6 +24,9 @@ export function createApp(): Express {
       allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
     })
   );
+
+  // Cookie Parser Middleware
+  app.use(cookieParser());
 
   // Request Body Parsers (with size limits)
   app.use(express.json({ limit: '1mb' }));

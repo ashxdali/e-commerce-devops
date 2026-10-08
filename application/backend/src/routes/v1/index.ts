@@ -4,11 +4,19 @@ import { validate } from '../../middleware/validate.middleware.js';
 import { sendSuccess } from '../../utils/response.js';
 import { config } from '../../config/index.js';
 import { z } from 'zod';
+import authRouter from './auth.routes.js';
+import adminRouter from './admin.routes.js';
 
 const v1Router = Router();
 
 // GET /api/v1 - API information endpoint
 v1Router.get('/', getApiInfo);
+
+// Authentication API Endpoints
+v1Router.use('/auth', authRouter);
+
+// Admin Temporary Test Endpoints
+v1Router.use('/admin', adminRouter);
 
 // Operational validation test endpoint (non-production environments)
 if (config.NODE_ENV !== 'production') {
@@ -23,15 +31,5 @@ if (config.NODE_ENV !== 'production') {
     sendSuccess(res, { validated: true, input: req.body });
   });
 }
-
-// Future modular route mounts:
-// v1Router.use('/auth', authRoutes);
-// v1Router.use('/categories', categoryRoutes);
-// v1Router.use('/products', productRoutes);
-// v1Router.use('/cart', cartRoutes);
-// v1Router.use('/wishlist', wishlistRoutes);
-// v1Router.use('/orders', orderRoutes);
-// v1Router.use('/reviews', reviewRoutes);
-// v1Router.use('/admin', adminRoutes);
 
 export default v1Router;
